@@ -22,4 +22,10 @@
         android:name="com.br.undcon.ui.fragment.slideshow.SlideshowFragment"
         android:label="@string/menu_slideshow"
         tools:layout="@layout/fragment_slideshow" />
+
+    <activity
+        android:id="@+id/navSector"
+        android:name="com.br.undcon.ui.activity.SectorActivity"
+        android:label="@string/menu_gallery"
+        tools:layout="@layout/activity_sector" />
 </navigation>

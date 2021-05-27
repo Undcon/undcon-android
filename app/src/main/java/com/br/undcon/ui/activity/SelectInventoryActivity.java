@@ -1,52 +1,82 @@
 package com.br.undcon.ui.activity;
 
-import android.os.Bundle;
-
-import com.br.undcon.databinding.ActivitySelectInventoryBinding;
-import com.google.android.material.snackbar.Snackbar;
-
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
+import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ListView;
+import android.widget.Toast;
 
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
+import com.br.undcon.dao.InventoryProductDAO;
+import com.br.undcon.databinding.ActivitySelectInventoryBinding;
+import com.br.undcon.dto.InventoryDto;
+import com.br.undcon.model.InventoryEntity;
+import com.br.undcon.model.InventoryProductEntity;
+import com.br.undcon.model.UserEntity;
+import com.br.undcon.ui.adapter.InventoryAdapter;
+import com.br.undcon.utils.UserCache;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
-import com.br.undcon.R;
+import java.lang.reflect.Type;
+import java.util.List;
 
-public class SelectInventoryActivity extends AppCompatActivity {
+public class SelectInventoryActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
 
-    private AppBarConfiguration appBarConfiguration;
     private ActivitySelectInventoryBinding binding;
+    private ListView inventoriesListView;
+    private List<InventoryDto> inventoriesList;
+    private InventoryProductDAO inventoryProductDAO;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         binding = ActivitySelectInventoryBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        setSupportActionBar(binding.toolbar);
+        config();
+        loadInventoriesList();
 
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_select_inventory);
-        appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
-        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
+        inventoryProductDAO = new InventoryProductDAO(this);
+    }
 
-        binding.fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+    private void config() {
+        inventoriesListView = binding.inventoriesList;
+        inventoriesListView.setOnItemClickListener(this);
+    }
+
+    private void loadInventoriesList() {
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            Gson gson = new Gson();
+            Type listType = new TypeToken<List<InventoryDto>>(){}.getType();
+            inventoriesList = gson.fromJson(extras.getString("inventories"), listType);
+        }
+
+        inventoriesListView.setAdapter(new InventoryAdapter(this, inventoriesList));
     }
 
     @Override
-    public boolean onSupportNavigateUp() {
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_select_inventory);
-        return NavigationUI.navigateUp(navController, appBarConfiguration)
-                || super.onSupportNavigateUp();
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        if (parent.getId() == inventoriesListView.getId()) {
+            InventoryDto ie = inventoriesList.get(position);
+            UserCache.getInstance().setInventory(ie);
+
+            String message = "Agora está alterando o inventário " + ie.getId();
+            Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
+
+            importInventoryProduct();
+
+            Intent intent = new Intent(this, MenuActivity.class);
+            startActivity(intent);
+        }
+    }
+
+    public void importInventoryProduct() {
+        InventoryProductEntity entity = new InventoryProductEntity(null, new UserEntity(new Long(2)), new InventoryEntity(new Long(2)), "123456789", "ASDFFDV", "Produto Qualquer");
+        long id = inventoryProductDAO.insert(entity);
+        Toast.makeText(getApplicationContext(), "Inserido ID: " + id, Toast.LENGTH_LONG).show();
     }
 }

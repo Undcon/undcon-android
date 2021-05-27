@@ -1,7 +1,7 @@
 package com.br.undcon.rest.service;
 
 import com.br.undcon.dto.LoginResponseDto;
-import com.br.undcon.utils.UserCredential;
+import com.br.undcon.utils.UserCache;
 
 import java.io.IOException;
 
@@ -18,7 +18,7 @@ public class HttpInterceptor implements Interceptor {
 //            return chain.proceed(originalRequest);
 //        }
 
-        LoginResponseDto user = UserCredential.getInstance().getUser();
+        LoginResponseDto user = UserCache.getInstance().getUser();
         String token = "";
         if (user != null) {
             token = user.getToken();

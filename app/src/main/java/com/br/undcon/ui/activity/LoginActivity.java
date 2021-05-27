@@ -11,12 +11,16 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.br.undcon.ui.activity.MenuActivity;
+import com.br.undcon.dto.InventoryDto;
 import com.br.undcon.dto.LoginRequestDto;
 import com.br.undcon.dto.LoginResponseDto;
+import com.br.undcon.rest.service.InventoryOperatorService;
 import com.br.undcon.rest.service.LoginService;
 import com.br.undcon.databinding.ActivityLoginBinding;
-import com.br.undcon.utils.UserCredential;
+import com.br.undcon.utils.UserCache;
+import com.google.gson.Gson;
+
+import java.util.List;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -24,7 +28,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private EditText usernameEditText;
     private EditText passwordEditText;
     private Button loginButton;
-    private ProgressBar loadingProgressBar;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -40,9 +43,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         usernameEditText = binding.username;
         passwordEditText = binding.password;
         loginButton = binding.login;
-        loadingProgressBar = binding.loading;
     }
-
 
     private void setListeners() {
         loginButton.setEnabled(true);
@@ -54,9 +55,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @Override
     public void onClick(View v) {
         if (v.getId() == binding.login.getId()) {
-//            loadingProgressBar.setVisibility(View.VISIBLE);
-//            actionLoginButton();
-            navigateToMain();
+            actionLoginButton();
         }
     }
 
@@ -64,20 +63,34 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         LoginService loginService = new LoginService();
         LoginResponseDto res = loginService.login(new LoginRequestDto(binding.username.getText().toString(), binding.password.getText().toString()));
         if (res != null) {
-            UserCredential.getInstance().setUser(res);
+            UserCache.getInstance().setUser(res);
             Toast.makeText(getApplicationContext(), "Usuário encontrado", Toast.LENGTH_LONG).show();
             navigateToMain();
         } else {
             Toast.makeText(getApplicationContext(), "Nenhum usuário encontrado", Toast.LENGTH_LONG).show();
         }
-        loadingProgressBar.setVisibility(View.INVISIBLE);
     }
 
     private void navigateToMain() {
-        Intent intent = new Intent(this, MenuActivity.class);
-//        EditText editText = (EditText) findViewById(R.id.editText);
-//        String message = editText.getText().toString();
-//        intent.putExtra(EXTRA_MESSAGE, message);
-        startActivity(intent);
+        InventoryOperatorService inventoryService = new InventoryOperatorService();
+        List<InventoryDto> inventories = inventoryService.findByCurrentOperator();
+        if (inventories.isEmpty()) {
+            Toast.makeText(getApplicationContext(), "Dados não encontrados, por favor contact o responsável", Toast.LENGTH_LONG).show();
+        } else {
+            Intent intent = null;
+            if (inventories.size() == 1) {
+                UserCache.getInstance().setInventory(inventories.get(0));
+
+                String message = "Agora está alterando o inventário " + inventories.get(0).getId();
+                Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
+
+                intent = new Intent(this, MenuActivity.class);
+            } else {
+                intent = new Intent(this, SelectInventoryActivity.class);
+                Gson gson = new Gson();
+                intent.putExtra("inventories", gson.toJson(inventories));
+            }
+            startActivity(intent);
+        }
     }
 }

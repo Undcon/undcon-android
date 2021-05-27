@@ -1,33 +1,33 @@
-package com.br.undcon.model;
+package com.br.undcon.dto;
+
+import com.br.undcon.model.InventoryStatus;
 
 import java.util.Date;
 
-public class InventoryEntity {
+public class InventoryDto {
 
     private Long id;
+
     private Date dateForeseen;
+
     private Date startDate;
+
     private Date endDate;
-    private CustomerEntity customer;
-    private UserEntity user;
+
+    private PersonDto customer;
+
     private InventoryStatus status;
 
-    public InventoryEntity() { }
+    public InventoryDto() { }
 
-    public InventoryEntity(Long id) {
-        super();
-        this.id = id;
-    }
-
-    public InventoryEntity(Long id, Date dateForeseen, Date startDate, Date endDate, CustomerEntity customer,
-                           UserEntity user, InventoryStatus status) {
+    public InventoryDto(Long id, Date dateForeseen, Date startDate, Date endDate, PersonDto customer,
+                        InventoryStatus status) {
         super();
         this.id = id;
         this.dateForeseen = dateForeseen;
         this.startDate = startDate;
         this.endDate = endDate;
         this.customer = customer;
-        this.user = user;
         this.status = status;
     }
 
@@ -63,20 +63,12 @@ public class InventoryEntity {
         this.endDate = endDate;
     }
 
-    public CustomerEntity getCustomer() {
+    public PersonDto getCustomer() {
         return customer;
     }
 
-    public void setCustomer(CustomerEntity customer) {
+    public void setCustomer(PersonDto customer) {
         this.customer = customer;
-    }
-
-    public UserEntity getUser() {
-        return user;
-    }
-
-    public void setUser(UserEntity user) {
-        this.user = user;
     }
 
     public InventoryStatus getStatus() {
