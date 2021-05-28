@@ -12,20 +12,8 @@
         tools:layout="@layout/fragment_home" />
 
     <fragment
-        android:id="@+id/nav_gallery"
-        android:name="com.br.undcon.ui.fragment.gallery.GalleryFragment"
-        android:label="@string/menu_gallery"
-        tools:layout="@layout/fragment_gallery" />
-
-    <fragment
-        android:id="@+id/nav_slideshow"
-        android:name="com.br.undcon.ui.fragment.slideshow.SlideshowFragment"
-        android:label="@string/menu_slideshow"
-        tools:layout="@layout/fragment_slideshow" />
-
-    <activity
-        android:id="@+id/navSector"
-        android:name="com.br.undcon.ui.activity.SectorActivity"
-        android:label="@string/menu_gallery"
-        tools:layout="@layout/activity_sector" />
+        android:id="@+id/nav_sector"
+        android:name="com.br.undcon.ui.fragment.sector.SectorFragment"
+        android:label="@string/menu_sector"
+        tools:layout="@layout/fragment_sector" />
 </navigation>

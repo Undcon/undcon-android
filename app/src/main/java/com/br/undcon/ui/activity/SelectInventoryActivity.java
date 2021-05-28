@@ -69,7 +69,7 @@ public class SelectInventoryActivity extends AppCompatActivity implements Adapte
 
             importInventoryProduct();
 
-            Intent intent = new Intent(this, MenuActivity.class);
+            Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
         }
     }

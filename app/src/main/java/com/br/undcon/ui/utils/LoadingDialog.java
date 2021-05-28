@@ -1,4 +1,4 @@
-package com.br.undcon.utils;
+package com.br.undcon.ui.utils;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -24,7 +24,7 @@ public class LoadingDialog {
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
 
         LayoutInflater inflater = activity.getLayoutInflater();
-        View view = inflater.inflate(R.layout.custom_loader, null);
+        View view = inflater.inflate(R.layout.dialog_loader, null);
         TextView loadingText = (TextView) view.findViewById(R.id.loadingText);
         loadingText.setText(message);
 

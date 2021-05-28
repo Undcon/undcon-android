@@ -24,7 +24,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.br.undcon.databinding.ActivityMainBinding;
 import com.br.undcon.R;
 
-public class MenuActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
     private ActivityMainBinding binding;
@@ -59,7 +59,7 @@ public class MenuActivity extends AppCompatActivity {
     }
 
     private void setMenuConfigs() {
-        mAppBarConfiguration = new AppBarConfiguration.Builder(R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow, R.id.navSector)
+        mAppBarConfiguration = new AppBarConfiguration.Builder(R.id.nav_home, R.id.nav_sector)
                 .setDrawerLayout(drawerBinding)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);

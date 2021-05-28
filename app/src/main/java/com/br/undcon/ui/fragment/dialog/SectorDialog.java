@@ -22,7 +22,7 @@ public class SectorDialog extends AppCompatDialogFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
         LayoutInflater inflater = getActivity().getLayoutInflater();
-        View view = inflater.inflate(R.layout.sector_dialog, null);
+        View view = inflater.inflate(R.layout.dialog_sector, null);
 
         builder.setView(view).setTitle("Setor")
                 .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
@@ -45,13 +45,12 @@ public class SectorDialog extends AppCompatDialogFragment {
     }
 
     @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         try {
-            listner = (SectorDialogListner) context;
+            listner = (SectorDialogListner) getParentFragment();
         } catch (ClassCastException e) {
-            throw new ClassCastException(context.toString() + e);
+            throw new ClassCastException("Calling fragment must implement Callback interface");
         }
     }
 

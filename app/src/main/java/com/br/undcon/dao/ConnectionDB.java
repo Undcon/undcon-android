@@ -16,10 +16,8 @@ public class ConnectionDB extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        StringBuilder exec = new StringBuilder();
-        exec.append(createInventoryProduct()).append(createSector());
-
-        db.execSQL(exec.toString());
+        db.execSQL(createInventoryProduct());
+        db.execSQL(createSector());
     }
 
     public String createInventoryProduct() {
@@ -35,7 +33,7 @@ public class ConnectionDB extends SQLiteOpenHelper {
     }
 
     public String createSector() {
-        return "CREATE TABLE sector(name VARCHAR);";
+        return "CREATE TABLE setor(name VARCHAR);";
     }
 
     @Override

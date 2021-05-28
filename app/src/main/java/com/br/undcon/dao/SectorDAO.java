@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SectorDAO {
-    private static final String TABLE_NAME = "sector";
+    private static final String TABLE_NAME = "setor";
     private ConnectionDB connectionDB;
     private SQLiteDatabase database;
 

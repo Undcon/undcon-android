@@ -8,7 +8,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.br.undcon.dto.InventoryDto;
@@ -84,7 +83,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 String message = "Agora está alterando o inventário " + inventories.get(0).getId();
                 Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
 
-                intent = new Intent(this, MenuActivity.class);
+                intent = new Intent(this, MainActivity.class);
             } else {
                 intent = new Intent(this, SelectInventoryActivity.class);
                 Gson gson = new Gson();

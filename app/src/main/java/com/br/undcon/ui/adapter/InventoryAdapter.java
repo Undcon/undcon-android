@@ -19,7 +19,7 @@ public class InventoryAdapter extends ArrayAdapter<InventoryDto> {
     private final List<InventoryDto> inventories;
 
     public InventoryAdapter(Context context, List<InventoryDto> inventories) {
-        super(context, R.layout.inventory_list, inventories);
+        super(context, R.layout.adapter_inventory_list, inventories);
         this.context = context;
         this.inventories = inventories;
     }
@@ -27,7 +27,7 @@ public class InventoryAdapter extends ArrayAdapter<InventoryDto> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View rowView = inflater.inflate(R.layout.inventory_list, parent, false);
+        View rowView = inflater.inflate(R.layout.adapter_inventory_list, parent, false);
 
 //        LayoutInflater.from(this).inflate(android.R.layout.inventory_list,null);
 
