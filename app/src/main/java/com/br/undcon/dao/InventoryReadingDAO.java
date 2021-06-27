@@ -41,12 +41,10 @@ public class InventoryReadingDAO {
     }
 
     public long update(InventoryReadingDto dto) {
-        database.beginTransaction();
         ContentValues value = new ContentValues();
         value.put("id", dto.getId());
         value.put("quantidade", dto.getQuantity());
         long res = database.update(TABLE_NAME, value, null, null);
-        database.endTransaction();
         return res;
     }
 
