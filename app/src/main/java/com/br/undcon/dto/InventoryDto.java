@@ -18,10 +18,14 @@ public class InventoryDto {
 
     private InventoryStatus status;
 
-    public InventoryDto() { }
+    private String label;
+
+    public InventoryDto() {
+        // TODO Auto-generated constructor stub
+    }
 
     public InventoryDto(Long id, Date dateForeseen, Date startDate, Date endDate, PersonDto customer,
-                        InventoryStatus status) {
+                        InventoryStatus status, String label) {
         super();
         this.id = id;
         this.dateForeseen = dateForeseen;
@@ -29,6 +33,12 @@ public class InventoryDto {
         this.endDate = endDate;
         this.customer = customer;
         this.status = status;
+        this.label = label;
+    }
+
+    public InventoryDto(Long id) {
+        super();
+        this.id = id;
     }
 
     public Long getId() {
@@ -77,5 +87,13 @@ public class InventoryDto {
 
     public void setStatus(InventoryStatus status) {
         this.status = status;
+    }
+
+    public String getLabel() {
+        return label;
+    }
+
+    public void setLabel(String label) {
+        this.label = label;
     }
 }

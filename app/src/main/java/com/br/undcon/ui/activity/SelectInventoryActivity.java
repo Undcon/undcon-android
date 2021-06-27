@@ -9,13 +9,11 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.br.undcon.dao.InventoryProductDAO;
+import com.br.undcon.controller.InventoryProductController;
 import com.br.undcon.databinding.ActivitySelectInventoryBinding;
 import com.br.undcon.dto.InventoryDto;
-import com.br.undcon.model.InventoryEntity;
-import com.br.undcon.model.InventoryProductEntity;
-import com.br.undcon.model.UserEntity;
 import com.br.undcon.ui.adapter.InventoryAdapter;
+import com.br.undcon.ui.utils.LoadingDialog;
 import com.br.undcon.utils.UserCache;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -28,7 +26,7 @@ public class SelectInventoryActivity extends AppCompatActivity implements Adapte
     private ActivitySelectInventoryBinding binding;
     private ListView inventoriesListView;
     private List<InventoryDto> inventoriesList;
-    private InventoryProductDAO inventoryProductDAO;
+    private InventoryProductController controller;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,10 +34,10 @@ public class SelectInventoryActivity extends AppCompatActivity implements Adapte
         binding = ActivitySelectInventoryBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        controller = new InventoryProductController(this);
+
         config();
         loadInventoriesList();
-
-        inventoryProductDAO = new InventoryProductDAO(this);
     }
 
     private void config() {
@@ -64,19 +62,36 @@ public class SelectInventoryActivity extends AppCompatActivity implements Adapte
             InventoryDto ie = inventoriesList.get(position);
             UserCache.getInstance().setInventory(ie);
 
-            String message = "Agora está alterando o inventário " + ie.getId();
+            String message = "Agora está alterando o inventário " + ie.getLabel();
             Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
 
+            LoadingDialog loadingDialog = new LoadingDialog(this);
+            loadingDialog.show("Aguarde, estamos carregando os produtos do inventário.");
+
             importInventoryProduct();
+            loadingDialog.hide();
 
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
         }
     }
 
-    public void importInventoryProduct() {
-        InventoryProductEntity entity = new InventoryProductEntity(null, new UserEntity(new Long(2)), new InventoryEntity(new Long(2)), "123456789", "ASDFFDV", "Produto Qualquer");
-        long id = inventoryProductDAO.insert(entity);
-        Toast.makeText(getApplicationContext(), "Inserido ID: " + id, Toast.LENGTH_LONG).show();
+    public boolean importInventoryProduct() {
+//        InventoryProductEntity entity = new InventoryProductEntity(null, new UserEntity(new Long(2)), new InventoryEntity(new Long(2)), "123456789", "ASDFFDV", "Produto Qualquer");
+//        long id = controller.insert(entity);
+//        Toast.makeText(getApplicationContext(), "Inserido ID: " + id, Toast.LENGTH_LONG).show();
+        return controller.loadItens();
     }
+
+
+
+
+
+
+
+
+
+
+
+
 }

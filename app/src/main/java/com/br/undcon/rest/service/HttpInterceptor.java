@@ -18,7 +18,7 @@ public class HttpInterceptor implements Interceptor {
 //            return chain.proceed(originalRequest);
 //        }
 
-        LoginResponseDto user = UserCache.getInstance().getUser();
+        LoginResponseDto user = UserCache.getInstance().getLogin();
         String token = "";
         if (user != null) {
             token = user.getToken();

@@ -18,22 +18,36 @@ public class ConnectionDB extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(createInventoryProduct());
         db.execSQL(createSector());
+        db.execSQL(createInventoryReading());
     }
 
     public String createInventoryProduct() {
         StringBuilder createBuilder = new StringBuilder();
-        createBuilder.append(" CREATE TABLE inventario_produto(id integer primary key autoincrement,")
-                .append("                                      usuario_id integer,                  ")
-                .append("                                      inventario_id integer,               ")
-                .append("                                      gtin VARCHAR,                        ")
-                .append("                                      codigo_interno VARCHAR,              ")
-                .append("                                      descricao VARCHAR);                  ");
+        createBuilder.append(" CREATE TABLE inventario_produto(id INTEGER PRIMARY KEY AUTOINCREMENT, ")
+                .append("                                      usuario_id INTEGER,                   ")
+                .append("                                      inventario_id INTEGER,                ")
+                .append("                                      gtin VARCHAR,                         ")
+                .append("                                      codigo_interno VARCHAR,               ")
+                .append("                                      descricao VARCHAR);                   ");
 
         return createBuilder.toString();
     }
 
     public String createSector() {
-        return "CREATE TABLE setor(name VARCHAR);";
+        return "CREATE TABLE setor(id INTEGER PRIMARY KEY AUTOINCREMENT, name INTEGER);";
+    }
+
+    public String createInventoryReading() {
+        StringBuilder createBuilder = new StringBuilder();
+        createBuilder.append(" CREATE TABLE leitura_inventario(id INTEGER PRIMARY KEY AUTOINCREMENT,        ")
+                .append("                                      inventario_produto_id INTEGER,               ")
+                .append("                                      quantidade INTEGER,                          ")
+                .append("                                      setor INTEGER,                               ")
+//                .append("                                      operador_id INTEGER,                         ")
+                .append("                                      inventario_id INTEGER);                      ");
+//                .append("                                      status INTEGER);                             ");
+
+        return createBuilder.toString();
     }
 
     @Override

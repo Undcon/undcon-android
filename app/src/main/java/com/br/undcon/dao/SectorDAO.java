@@ -31,7 +31,7 @@ public class SectorDAO {
         Cursor cursor = database.query(TABLE_NAME, new String[]{"name"}, null, null, null, null, "name");
         while (cursor.moveToNext()) {
             SectorEntity entity = new SectorEntity();
-            entity.setName(cursor.getString(0));
+            entity.setName(cursor.getInt(0));
             results.add(entity);
         }
         return results;

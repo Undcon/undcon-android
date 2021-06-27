@@ -13,6 +13,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import com.br.undcon.R;
+import com.br.undcon.utils.TranslateEnum;
 
 public class InventoryAdapter extends ArrayAdapter<InventoryDto> {
     private final Context context;
@@ -29,24 +30,11 @@ public class InventoryAdapter extends ArrayAdapter<InventoryDto> {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View rowView = inflater.inflate(R.layout.adapter_inventory_list, parent, false);
 
-//        LayoutInflater.from(this).inflate(android.R.layout.inventory_list,null);
-
-
         TextView number = (TextView) rowView.findViewById(R.id.number);
         TextView status = (TextView) rowView.findViewById(R.id.status);
-//        TextView dataForeseen = (TextView) rowView.findViewById(R.id.dataFore);
 
-        number.setText(this.inventories.get(position).getId().toString());
-        status.setText(this.inventories.get(position).getStatus().toString());
-
-        Date date = this.inventories.get(position).getDateForeseen();
-        String formatDate = "";
-        if (date != null) {
-            SimpleDateFormat sdf = new SimpleDateFormat();
-//            sdf.format(date, "dd/MM/yyyy");
-            formatDate = date.toString();
-        }
-//        dataForeseen.setText(formatDate);
+        number.setText(this.inventories.get(position).getLabel());
+        status.setText(TranslateEnum.getInventoryStatus(this.inventories.get(position).getStatus().toString()));
 
         return rowView;
     }

@@ -17,7 +17,7 @@ public class InventoryOperatorService {
     private InventoryOperatorAPI inventoryAPI;
 
     public InventoryOperatorService() {
-        this.inventoryAPI = ServiceGenerator.createService(InventoryOperatorAPI.class);
+        this.inventoryAPI = ServiceGenerator.createService(InventoryOperatorAPI.class, true);
     }
 
     public List<InventoryDto> findByCurrentOperator() {

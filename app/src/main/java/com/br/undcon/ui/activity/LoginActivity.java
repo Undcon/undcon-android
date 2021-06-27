@@ -10,12 +10,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.br.undcon.controller.InventoryProductController;
 import com.br.undcon.dto.InventoryDto;
 import com.br.undcon.dto.LoginRequestDto;
 import com.br.undcon.dto.LoginResponseDto;
 import com.br.undcon.rest.service.InventoryOperatorService;
 import com.br.undcon.rest.service.LoginService;
 import com.br.undcon.databinding.ActivityLoginBinding;
+import com.br.undcon.ui.utils.LoadingDialog;
 import com.br.undcon.utils.UserCache;
 import com.google.gson.Gson;
 
@@ -27,12 +29,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private EditText usernameEditText;
     private EditText passwordEditText;
     private Button loginButton;
+    private InventoryProductController controller;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityLoginBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        controller = new InventoryProductController(this);
 
         setBindings();
         setListeners();
@@ -61,8 +66,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private void actionLoginButton() {
         LoginService loginService = new LoginService();
         LoginResponseDto res = loginService.login(new LoginRequestDto(binding.username.getText().toString(), binding.password.getText().toString()));
+
         if (res != null) {
-            UserCache.getInstance().setUser(res);
+            UserCache.getInstance().setLogin(res);
             Toast.makeText(getApplicationContext(), "Usuário encontrado", Toast.LENGTH_LONG).show();
             navigateToMain();
         } else {
@@ -78,10 +84,17 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         } else {
             Intent intent = null;
             if (inventories.size() == 1) {
-                UserCache.getInstance().setInventory(inventories.get(0));
+                InventoryDto dto = inventories.get(0);
+                UserCache.getInstance().setInventory(dto);
 
-                String message = "Agora está alterando o inventário " + inventories.get(0).getId();
+                String message = "Agora está alterando o inventário: " + dto.getLabel();
                 Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
+
+                LoadingDialog loadingDialog = new LoadingDialog(this);
+                loadingDialog.show("Aguarde, estamos carregando os produtos do inventário.");
+
+                importInventoryProduct();
+                loadingDialog.hide();
 
                 intent = new Intent(this, MainActivity.class);
             } else {
@@ -91,5 +104,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             }
             startActivity(intent);
         }
+    }
+
+    public boolean importInventoryProduct() {
+//        InventoryProductEntity entity = new InventoryProductEntity(null, new UserEntity(new Long(2)), new InventoryEntity(new Long(2)), "123456789", "ASDFFDV", "Produto Qualquer");
+//        long id = controller.insert(entity);
+//        Toast.makeText(getApplicationContext(), "Inserido ID: " + id, Toast.LENGTH_LONG).show();
+        return controller.loadItens();
     }
 }

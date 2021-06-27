@@ -13,7 +13,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class ServiceGenerator {
     public static final String API_BASE_URL = "http://192.168.100.4:8080/";
 
-    public static <S> S createService(Class<S> serviceClass) {
+    public static <S> S createService(Class<S> serviceClass, boolean formatDate) {
         HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
         loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
 
@@ -23,13 +23,23 @@ public class ServiceGenerator {
         httpClient.addInterceptor(loggingInterceptor);
         httpClient.addInterceptor(new HttpInterceptor());
 
-        Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
+        Retrofit retrofit;
 
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(API_BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create(gson))
-                .client(httpClient.build())
-                .build();
+        if (formatDate) {
+            Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
+
+            retrofit = new Retrofit.Builder()
+                    .baseUrl(API_BASE_URL)
+                    .addConverterFactory(GsonConverterFactory.create(gson))
+                    .client(httpClient.build())
+                    .build();
+        } else {
+            retrofit = new Retrofit.Builder()
+                    .baseUrl(API_BASE_URL)
+                    .addConverterFactory(GsonConverterFactory.create(new Gson()))
+                    .client(httpClient.build())
+                    .build();
+        }
 
         return retrofit.create(serviceClass);
     }

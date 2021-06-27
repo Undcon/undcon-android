@@ -8,7 +8,7 @@ import com.google.gson.Gson;
 
 public class UserCache {
     private static UserCache userCredential;
-    private LoginResponseDto user;
+    private LoginResponseDto login;
     private InventoryDto inventory;
 
     private SharedPreferences sharedPreferences;
@@ -19,12 +19,12 @@ public class UserCache {
         return userCredential;
     }
 
-    public void setUser(LoginResponseDto dto) {
-        this.user = dto;
+    public void setLogin(LoginResponseDto dto) {
+        this.login = dto;
     }
 
-    public LoginResponseDto getUser() {
-        return this.user;
+    public LoginResponseDto getLogin() {
+        return this.login;
     }
 
     public void setInventory(InventoryDto ie) {

@@ -47,4 +47,5 @@ dependencies {
 
     implementation 'com.google.zxing:core:3.3.2'
     implementation 'com.journeyapps:zxing-android-embedded:3.5.0'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
 }

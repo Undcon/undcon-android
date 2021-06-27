@@ -1,24 +1,24 @@
 package com.br.undcon.model;
 
 public class SectorEntity {
-    private String name;
+    private Integer name;
 
     public SectorEntity() { }
 
-    public SectorEntity(String name) {
+    public SectorEntity(Integer name) {
         this.name = name;
     }
 
-    public String getName() {
+    public Integer getName() {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(Integer name) {
         this.name = name;
     }
 
     @Override
     public String toString() {
-        return name;
+        return "Setor " + name;
     }
 }

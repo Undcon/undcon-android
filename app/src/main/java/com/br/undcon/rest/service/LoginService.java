@@ -17,7 +17,7 @@ public class LoginService {
     private LoginAPI loginAPI;
 
     public LoginService() {
-        this.loginAPI = ServiceGenerator.createService(LoginAPI.class);
+        this.loginAPI = ServiceGenerator.createService(LoginAPI.class, false);
     }
 
     public LoginResponseDto login(LoginRequestDto request) {

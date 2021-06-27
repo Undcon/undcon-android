@@ -4,16 +4,11 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.Menu;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.br.undcon.R;
-import com.br.undcon.databinding.NavHeaderMainBinding;
-import com.br.undcon.ui.fragment.dialog.SectorDialog;
 import com.br.undcon.utils.UserCache;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
 
-import androidx.databinding.DataBindingUtil;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -22,7 +17,6 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.br.undcon.databinding.ActivityMainBinding;
-import com.br.undcon.R;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -46,10 +40,11 @@ public class MainActivity extends AppCompatActivity {
         View headerView = navigationView.getHeaderView(0);
 
         TextView userName = (TextView) headerView.findViewById(R.id.username);
-        userName.setText(UserCache.getInstance().getUser().getUser().getLogin());
+        userName.setText(UserCache.getInstance().getLogin().getUser().getLogin() + "@"
+            + UserCache.getInstance().getLogin().getTenant());
 
         TextView inventoryName = (TextView) headerView.findViewById(R.id.inventoryName);
-        inventoryName.setText("Inventário Nº " + UserCache.getInstance().getInventory().getId());
+        inventoryName.setText(UserCache.getInstance().getInventory().getLabel());
     }
 
     private void setBindings() {
@@ -59,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setMenuConfigs() {
-        mAppBarConfiguration = new AppBarConfiguration.Builder(R.id.nav_home, R.id.nav_sector)
+        mAppBarConfiguration = new AppBarConfiguration.Builder(R.id.nav_sector, R.id.nav_home)
                 .setDrawerLayout(drawerBinding)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
